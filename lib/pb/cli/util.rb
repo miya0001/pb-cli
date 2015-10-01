@@ -1,4 +1,3 @@
-require "yaml"
 
 module PB
   module Cli
@@ -16,6 +15,17 @@ module PB
             conf.merge!(_custom) if _custom.is_a?(Hash)
           end
           return conf
+        end
+
+        def send( url, args )
+          config = get_config
+          RestClient.post(
+            url,
+            args.to_json,
+            :content_type => :json,
+            :accept => :json,
+            "Access-Token" => config["token"]
+          )
         end
       end
     end

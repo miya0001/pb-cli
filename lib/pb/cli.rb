@@ -2,6 +2,7 @@ require "pb/cli/version"
 require "pb/cli/util"
 require "thor"
 require "rest-client"
+require "yaml"
 
 module PB
   module Cli
@@ -11,24 +12,19 @@ module PB
       # method_option :device, :aliases => "-d", :desc => "Target device to push."
       # method_option :person, :aliases => "-p", :desc => "Delete the file after parsing it"
       def push( message = "" )
-        url = "https://api.pushbullet.com/v2/pushes"
-        config = PB::Cli::Utils::get_config
-
         if File.pipe?(STDIN) || File.select([STDIN], [], [], 0) != nil then
           message = STDIN.gets
         end
 
-        RestClient.post(
-          url,
-          {
-            "type" => "note",
-            "body" => message,
-            "title" => ( options[:title] ? options[:title] : "" )
-          }.to_json,
-          :content_type => :json,
-          :accept => :json,
-          "Access-Token" => config["token"]
-        )
+        url = "https://api.pushbullet.com/v2/pushes"
+
+        args = {
+          "type" => "note",
+          "body" => message,
+          "title" => ( options[:title] ? options[:title] : "" )
+        }
+
+        Utils::send( url, args )
       end
     end
   end
