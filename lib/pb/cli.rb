@@ -10,11 +10,11 @@ require "yaml"
 
 module Pushbullet_CLI
   class Command < Thor
-    class_option :"access-token"
+    class_option :token, :desc => "Access token"
 
     desc "push <MESSAGE>", "Send a push to devices or another persons."
     method_option :title, :desc => "Title of the notification."
-    method_option :iden, :desc => "Iden of the target device to push."
+    method_option :device, :desc => "Iden of the target device to push."
     # method_option :person, :aliases => "-p", :desc => "Delete the file after parsing it"
     def push( message = "" )
       if File.pipe?( STDIN ) || File.select( [STDIN], [], [], 0 ) != nil then

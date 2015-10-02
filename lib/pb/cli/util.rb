@@ -24,8 +24,8 @@ module Pushbullet_CLI
 
       def get_token( options )
         token = ""
-        unless options[:"access-token"].nil?
-          token = options[:"access-token"]
+        unless options[:token].nil?
+          token = options[:token]
         else
           config = Utils::get_config
           unless config["access_token"].nil?
@@ -44,20 +44,20 @@ module Pushbullet_CLI
       def send( url, access_token, method = "post", args = {} )
         begin
           if "post" == method
-            return RestClient.post(
+            return JSON.parse( RestClient.post(
               url,
               args.to_json,
               :content_type => :json,
               :accept => :json,
               "Access-Token" => access_token
-            )
+            ) )
           elsif "get" == method
-            return RestClient.get(
+            return JSON.parse( RestClient.get(
               url,
               :content_type => :json,
               :accept => :json,
               "Access-Token" => access_token
-            )
+            ) )
           end
         rescue => e
           $stderr.puts e.message
@@ -67,7 +67,6 @@ module Pushbullet_CLI
 
       def print_table( headers, rows )
         puts Terminal::Table.new :headings => headers, :rows => rows
-        exit
       end
 
     end # end self
