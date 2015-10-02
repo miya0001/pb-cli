@@ -49,7 +49,7 @@ $ bundle install --path vendor/bundle
 ### Running automated tests
 
 ```
-$ bundle exec rspec
+$ access_token=<ACCESS_TOKEN> bundle exec rspec
 ```
 
 ## Contributing

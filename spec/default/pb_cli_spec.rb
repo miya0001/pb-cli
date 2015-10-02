@@ -38,12 +38,20 @@ describe "Tests for API access"  do
   end
 
   it "Pushes a message" do
-    Pushbullet_CLI::Command.new.invoke( :push, [ "Hello I'm Travis!" ], { token: ENV["access_token"] } )
+    expect{
+      Pushbullet_CLI::Command.new.invoke( :push, [ "Hello I'm Travis!" ], { token: ENV["access_token"] } )
+    }.not_to raise_error
   end
 
   it "Pushes a message with title" do
-    Pushbullet_CLI::Command.new.invoke( :push, [ "Hello I'm Travis! (with title)" ], { token: ENV["access_token"], title: "Hello" } )
+    expect{
+      Pushbullet_CLI::Command.new.invoke( :push, [ "Hello I'm Travis! (with title)" ], { token: ENV["access_token"], title: "Hello" } )
+    }.not_to raise_error
   end
+
+  # specify{ expect{
+  #   Pushbullet_CLI::Command.new.invoke( :push, [ "Hello I'm Travis!" ], { token: "THISISWRONGTOKEN" } )
+  # }.to output( "401 Unauthorized\n" ).to_stderr }
 
   specify{ expect{
     Pushbullet_CLI::Device.new.invoke( :list, [], { token: ENV["access_token"] } )
