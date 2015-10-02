@@ -28,6 +28,12 @@ Send notification.
 $ pb push <MESSAGE> [--title <TITLE>]
 ```
 
+Or send notification from STDIN.
+
+```
+$ ls -al | pb push
+```
+
 See also `pb help`.
 
 ## Development
