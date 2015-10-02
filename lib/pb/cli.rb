@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require "pb/cli/version"
 require "pb/cli/util"
 require "thor"
@@ -25,6 +27,17 @@ module PB
         }
 
         Utils::send( url, args )
+      end
+
+      desc "init <ACCESS-TOKEN>", "Initialize pb-cli"
+      def init( acccess_token )
+        unless Dir.exist? File.join( ENV["HOME"], '.pb-cli' )
+          FileUtils.mkdir( File.join( ENV["HOME"], '.pb-cli' ) );
+        end
+        File.open( File.join( ENV["HOME"], '.pb-cli', 'config.yml' ), "w" ) do | file |
+            file.write( "acccess_token: " + acccess_token )
+        end
+        FileUtils.chmod( 0600, File.join( ENV["HOME"], '.pb-cli', 'config.yml' ) )
       end
     end
   end

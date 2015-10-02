@@ -1,3 +1,5 @@
+# encoding: utf-8
+require "yaml"
 
 module PB
   module Cli
@@ -24,7 +26,7 @@ module PB
             args.to_json,
             :content_type => :json,
             :accept => :json,
-            "Access-Token" => config["token"]
+            "Access-Token" => config["acccess_token"]
           )
         end
       end
