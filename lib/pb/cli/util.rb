@@ -1,4 +1,5 @@
 # encoding: utf-8
+# vim: ft=ruby expandtab shiftwidth=2 tabstop=2
 
 require "yaml"
 
@@ -19,15 +20,19 @@ module Pushbullet_CLI
         return conf
       end
 
-      def send( url, args )
-        config = get_config
-        RestClient.post(
-          url,
-          args.to_json,
-          :content_type => :json,
-          :accept => :json,
-          "Access-Token" => config["acccess_token"]
-        )
+      def send( url, access_token, args )
+        begin
+          RestClient.post(
+            url,
+            args.to_json,
+            :content_type => :json,
+            :accept => :json,
+            "Access-Token" => access_token
+          )
+        rescue => e
+          $stderr.puts e.message
+          exit 1
+        end
       end
     end
   end
