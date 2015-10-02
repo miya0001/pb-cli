@@ -2,4 +2,4 @@
 
 require "pb/cli"
 
-PB::Cli::Command.start
+Pushbullet_CLI::Command.start

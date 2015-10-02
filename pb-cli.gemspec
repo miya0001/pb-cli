@@ -5,7 +5,7 @@ require 'pb/cli/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "pb-cli"
-  spec.version       = Pb::Cli::VERSION
+  spec.version       = Pushbullet_CLI::VERSION
   spec.authors       = ["miya0001"]
   spec.email         = ["miya@wpist.me"]
 

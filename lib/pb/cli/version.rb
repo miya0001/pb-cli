@@ -1,5 +1,3 @@
-module Pb
-  module Cli
-    VERSION = "0.1.0"
-  end
+module Pushbullet_CLI
+  VERSION = "0.1.0"
 end
