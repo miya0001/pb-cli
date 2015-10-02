@@ -9,7 +9,7 @@ require "yaml"
 module PB
   module Cli
     class Command < Thor
-      desc "push <MESSAGE>", "Send a push to a device or another person."
+      desc "push <MESSAGE>", "Send a push to devices or another persons."
       method_option :title, :aliases => "-t", :desc => "Title of the notification."
       # method_option :device, :aliases => "-d", :desc => "Target device to push."
       # method_option :person, :aliases => "-p", :desc => "Delete the file after parsing it"
@@ -20,13 +20,17 @@ module PB
 
         url = "https://api.pushbullet.com/v2/pushes"
 
-        args = {
-          "type" => "note",
-          "body" => message,
-          "title" => ( options[:title] ? options[:title] : "" )
-        }
+        if message
+          args = {
+            "type" => "note",
+            "body" => message,
+            "title" => ( options[:title] ? options[:title] : "" )
+          }
 
-        Utils::send( url, args )
+          Utils::send( url, args )
+        else
+          puts "Nothing to do."
+        end
       end
 
       desc "init <ACCESS-TOKEN>", "Initialize pb-cli"
