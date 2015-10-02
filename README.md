@@ -44,7 +44,7 @@ $ cd pb-cli
 $ bundle install --path vendor/bundle
 ```
 
-### Running automated testing
+### Running automated tests
 
 ```
 $ bundle exec rspec
