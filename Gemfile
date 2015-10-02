@@ -5,5 +5,4 @@ gemspec
 
 gem "rspec"
 gem "thor"
-gem "json"
 gem "rest-client"
