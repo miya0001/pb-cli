@@ -3,6 +3,7 @@ PATH
   specs:
     pb-cli (0.2.0)
       rest-client (~> 1.8)
+      terminal-table (~> 1.5)
       thor (~> 0.19)
 
 GEM
@@ -33,6 +34,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.3.0)
     rspec-support (3.3.0)
+    terminal-table (1.5.2)
     thor (0.19.1)
     unf (0.1.4)
       unf_ext
@@ -47,6 +49,7 @@ DEPENDENCIES
   rake (~> 10.0)
   rest-client
   rspec
+  terminal-table
   thor
 
 BUNDLED WITH

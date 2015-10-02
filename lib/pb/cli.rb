@@ -3,38 +3,39 @@
 
 require "pb/cli/version"
 require "pb/cli/util"
+require "pb/cli/device"
 require "thor"
 require "rest-client"
 require "yaml"
 
 module Pushbullet_CLI
   class Command < Thor
-
-    def self.exit_on_failure?
-      true
-    end
+    class_option :"access-token"
 
     desc "push <MESSAGE>", "Send a push to devices or another persons."
-    method_option :title, :aliases => "-t", :desc => "Title of the notification."
-    # method_option :device, :aliases => "-d", :desc => "Target device to push."
+    method_option :title, :desc => "Title of the notification."
+    method_option :iden, :desc => "Iden of the target device to push."
     # method_option :person, :aliases => "-p", :desc => "Delete the file after parsing it"
     def push( message = "" )
-      if File.pipe?(STDIN) || File.select([STDIN], [], [], 0) != nil then
+      if File.pipe?( STDIN ) || File.select( [STDIN], [], [], 0 ) != nil then
         message = STDIN.readlines().join( "" )
       end
 
       url = "https://api.pushbullet.com/v2/pushes"
+      token = Utils::get_token( options )
 
       if message
-        config = Utils::get_config
-
         args = {
           "type" => "note",
           "body" => message,
           "title" => ( options[:title] ? options[:title] : "" )
         }
 
-        Utils::send( url, config['access_token'], args )
+        if options[:device]
+          args['device_iden'] = options[:device]
+        end
+
+        Utils::send( url, token, "post", args )
       else
         puts "Nothing to do."
       end
@@ -51,5 +52,7 @@ module Pushbullet_CLI
       FileUtils.chmod( 0600, File.join( ENV["HOME"], '.pb-cli', 'config.yml' ) )
     end
 
+    desc "device <SUBCOMMAND>", "Manage devices."
+    subcommand "device", Device
   end # end class Command
 end # end module Pushbullet_CLi

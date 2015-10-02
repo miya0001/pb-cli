@@ -6,3 +6,4 @@ gemspec
 gem "rspec"
 gem "thor"
 gem "rest-client"
+gem "terminal-table"
