@@ -9,7 +9,7 @@ describe Pushbullet_CLI::Command do
   it "Creating config file" do
     ENV["HOME"] = "/tmp"
     Pushbullet_CLI::Command.new.init( 'my_acccess_token' )
-    FileTest.exist?( "/tmp/.pb-cli/config.yml" ).should be_truthy
+    expect( FileTest.exist?( "/tmp/.pb-cli/config.yml" ) ).to be_truthy
     config = Pushbullet_CLI::Utils::get_config
     expect( config["access_token"] ).to eq "my_acccess_token"
   end

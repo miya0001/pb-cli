@@ -38,6 +38,12 @@ $ cd pb-cli
 $ bundle install --path vendor/bundle
 ```
 
+### Running automated testing
+
+```
+$ bundle exec rspec
+```
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/miya0001/pb-cli.
