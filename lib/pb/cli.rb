@@ -24,15 +24,17 @@ module Pushbullet_CLI
       url = "https://api.pushbullet.com/v2/pushes"
       token = Utils::get_token( options )
 
-      if message
+      unless message.empty?
         args = {
           "type" => "note",
           "body" => message,
           "title" => ( options[:title] ? options[:title] : "" )
         }
 
-        if options[:device]
-          args['device_iden'] = options[:device]
+        unless options[:device].nil?
+          unless options[:device].empty?
+            args['device_iden'] = options[:device]
+          end
         end
 
         Utils::send( url, token, "post", args )
