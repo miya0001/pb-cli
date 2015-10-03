@@ -10,7 +10,7 @@ require "yaml"
 
 module Pushbullet_CLI
   class Command < Thor
-    class_option :token, :desc => "Access token"
+    class_option :token, :desc => "Your access token for Pushbullet API."
 
     desc "push <MESSAGE>", "Send a push to devices or another persons."
     method_option :title, :desc => "Title of the notification."
@@ -43,7 +43,7 @@ module Pushbullet_CLI
       end
     end
 
-    desc "init <ACCESS-TOKEN>", "Initialize pb-cli"
+    desc "init <ACCESS-TOKEN>", "Writes access token into your config file."
     def init( access_token )
       unless Dir.exist? File.join( ENV["HOME"], '.pb-cli' )
         FileUtils.mkdir( File.join( ENV["HOME"], '.pb-cli' ) );

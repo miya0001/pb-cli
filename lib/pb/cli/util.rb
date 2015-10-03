@@ -36,7 +36,7 @@ module Pushbullet_CLI
         unless token.empty?
           return token
         else
-          $stderr.puts "Please initialize an Access Token with `pb init <ACCESS-TOKEN>`."
+          $stderr.puts "Please initialize an Access Token with `pb init <ACCESS-TOKEN>` or run command with `--token=<ACCESS-TOKEN>`."
           exit 1
         end
       end
