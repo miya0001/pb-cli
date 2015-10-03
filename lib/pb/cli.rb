@@ -2,8 +2,9 @@
 # vim: ft=ruby expandtab shiftwidth=2 tabstop=2
 
 require "pb/cli/version"
-require "pb/cli/util"
+require "pb/cli/utils"
 require "pb/cli/device"
+require "pb/cli/push"
 require "thor"
 require "rest-client"
 require "yaml"
@@ -11,37 +12,6 @@ require "yaml"
 module Pushbullet_CLI
   class Command < Thor
     class_option :token, :desc => "Your access token for Pushbullet API."
-
-    desc "push <MESSAGE>", "Send a push to devices or another persons."
-    method_option :title, :desc => "Title of the notification."
-    method_option :device, :desc => "Iden of the target device to push."
-    # method_option :person, :aliases => "-p", :desc => "Delete the file after parsing it"
-    def push( message = "" )
-      if File.pipe?( STDIN ) || File.select( [STDIN], [], [], 0 ) != nil then
-        message = STDIN.readlines().join( "" )
-      end
-
-      url = "https://api.pushbullet.com/v2/pushes"
-      token = Utils::get_token( options )
-
-      unless message.empty?
-        args = {
-          "type" => "note",
-          "body" => message,
-          "title" => ( options[:title] ? options[:title] : "" )
-        }
-
-        unless options[:device].nil?
-          unless options[:device].empty?
-            args['device_iden'] = options[:device]
-          end
-        end
-
-        Utils::send( url, token, "post", args )
-      else
-        puts "Nothing to do."
-      end
-    end
 
     desc "init <ACCESS-TOKEN>", "Writes access token into your config file."
     def init( access_token )
@@ -56,5 +26,9 @@ module Pushbullet_CLI
 
     desc "device <SUBCOMMAND>", "Manage devices."
     subcommand "device", Device
+
+    desc "push <SUBCOMMAND>", "Send or manage notifications."
+    subcommand "push", Push
+
   end # end class Command
 end # end module Pushbullet_CLi

@@ -27,13 +27,13 @@ To access the Pushbullet API you'll need an access token so the server knows who
 Send notification.
 
 ```
-$ pb push <MESSAGE> [--title <TITLE>]
+$ pb push create <MESSAGE> [--title <TITLE>]
 ```
 
 Or send notification from STDIN.
 
 ```
-$ ls -al | pb push
+$ ls -al | pb push create
 ```
 
 See also `pb help`.
