@@ -8,18 +8,26 @@ module Pushbullet_CLI
     class_option :token, :desc => "Access token"
 
     desc "list", "Get a list of devices belonging to the current user."
+    method_option :format, :desc => "Accepted values: table, json. Default: table"
+    method_option :fields, :desc => "Limit the output to specific object fields."
     def list
       url = "https://api.pushbullet.com/v2/devices?active=true"
       token = Utils::get_token( options )
+      cols = [ 'iden', 'nickname', 'created' ]
+
+      unless options[:fields].nil?
+        unless options[:fields].empty?
+          cols = options[:fields].split( /\s*,\s*/ )
+        end
+      end
 
       result = Utils::send( url, token, "get" )
-      row = result['devices'].map.with_index{ | device | [
-        device['iden'],
-        device['nickname'],
-        device['model'],
-      ] }
+      Utils::print( {
+        :format => options[:format],
+        :cols => cols,
+        :rows => result['devices'],
+      } )
+    end # end list
 
-      Utils:: print_table( [ "Iden", "Nickname", "Model" ], row )
-    end
   end
 end
