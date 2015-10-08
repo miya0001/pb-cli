@@ -7,10 +7,20 @@ module Pushbullet_CLI
   class Device < Thor
     class_option :token, :desc => "Access token"
 
-    desc "list", "Get a list of devices belonging to the current user."
+    desc "device list", "Get a list of devices belonging to the current user."
     method_option :format, :desc => "Accepted values: table, json. Default: table"
     method_option :fields, :desc => "Limit the output to specific object fields."
-    def list
+    def list( help = "" )
+      unless help.empty?
+        if "help" == help
+          invoke( :help, [ "list" ] );
+          exit 0
+        else
+          self.class.handle_argument_error
+          exit 1
+        end
+      end
+
       url = "https://api.pushbullet.com/v2/devices?active=true"
       token = Utils::get_token( options )
       cols = [ 'iden', 'nickname', 'created' ]

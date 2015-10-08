@@ -4,15 +4,21 @@
 require "thor"
 
 module Pushbullet_CLI
+
   class Push < Thor
     class_option :token, :desc => "Access token"
 
-    desc "create <MESSAGE>", "Send a push to devices or another persons."
+    desc "push create <MESSAGE>", "Send a push to devices or another persons."
     method_option :title, :desc => "Title of the notification."
     method_option :device, :desc => "Iden of the target device to push."
     method_option :url, :desc => "The url to open."
     # method_option :person, :aliases => "-p", :desc => "Delete the file after parsing it"
     def create( message = "" )
+      if "help" == message
+        invoke( :help, [ "create" ] );
+        exit 0
+      end
+
       if File.pipe?( STDIN ) || File.select( [STDIN], [], [], 0 ) != nil then
         message = STDIN.readlines().join( "" )
       end
@@ -29,10 +35,20 @@ module Pushbullet_CLI
       end
     end # end create
 
-    desc "list", "Request push history."
+    desc "push list", "Request push history."
     method_option :format, :desc => "Accepted values: table, json. Default: table"
     method_option :fields, :desc => "Limit the output to specific object fields."
-    def list
+    def list( help = "" )
+      unless help.empty?
+        if "help" == help
+          invoke( :help, [ "list" ] );
+          exit 0
+        else
+          self.class.handle_argument_error
+          exit 1
+        end
+      end
+
       url = "https://api.pushbullet.com/v2/pushes?active=true"
       token = Utils::get_token( options )
       cols = [ 'iden', 'type', 'title', 'created' ]
@@ -53,8 +69,3 @@ module Pushbullet_CLI
 
   end
 end
-
-# curl --header 'Access-Token: VeoW8P4oMACU46KXMYAA4f1ahIpRvB4E' \
-# --data active=true \
-# --get \
-# https://api.pushbullet.com/v2/pushes
